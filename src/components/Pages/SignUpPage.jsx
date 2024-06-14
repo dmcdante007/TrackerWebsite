@@ -9,6 +9,7 @@ const SignupPage = () => {
   const passwordInputRef = useRef();
   const [isLoading, setIsloding] = useState(false);
     const ctx = useContext(ContextApi)
+  const history = useNavigate()
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -35,7 +36,7 @@ const SignupPage = () => {
         },
     })
     .then((res)=>{
-        console.log('in 1st Then')
+        // console.log('in 1st Then')
         setIsloding(false);
         if(res.ok){
             return res.json()
@@ -48,9 +49,9 @@ const SignupPage = () => {
           }
 
     }).then((data) => {
-        console.log('In 2nd Then')
+        // console.log('In 2nd Then')
         ctx.login(data.idToken);
-        // history.replace('/');
+        history('/Welcome');
         console.log(data);
       })
       .catch((err) => {

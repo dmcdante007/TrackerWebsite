@@ -1,5 +1,6 @@
 import React from "react";
 import './Header.css';
+import { Link } from "react-router-dom";
 
 
 const Header = () => {
@@ -9,13 +10,13 @@ const Header = () => {
       <nav style={{backgroundColor: 'red'}}>
         <ul style={{ listStyle: "none", display: "flex", fontSize: '25px',  }}>
           <li style={{ marginLeft: '20px' }}>
-            <a style={{textDecoration: 'none'}} href="#">Home</a>
+            <Link style={{textDecoration: 'none'}} to='/SignUp' >Home</Link>
           </li>
           <li style={{ marginLeft: '20px' }}>
-            <a style={{textDecoration: 'none'}} href="#">Products</a>
+            <Link style={{textDecoration: 'none'}} to="#">Products</Link>
           </li>
           <li style={{ marginLeft: '20px' }}>
-            <a style={{textDecoration: 'none'}} href="#">About Us</a>
+            <Link style={{textDecoration: 'none'}} to="#">About Us</Link>
           </li>
         </ul>
       </nav>
