@@ -13,10 +13,10 @@ const Header = () => {
             <Link style={{textDecoration: 'none'}} to='/SignUp' >Home</Link>
           </li>
           <li style={{ marginLeft: '20px' }}>
-            <Link style={{textDecoration: 'none'}} to="#">Products</Link>
+            <Link style={{textDecoration: 'none'}} to="/Products">Products</Link>
           </li>
           <li style={{ marginLeft: '20px' }}>
-            <Link style={{textDecoration: 'none'}} to="#">About Us</Link>
+            <Link style={{textDecoration: 'none'}} to="/Aboutus">About Us</Link>
           </li>
         </ul>
       </nav>

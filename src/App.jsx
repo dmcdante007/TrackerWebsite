@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "./App.css";
 import Header from "./components/Pages/Header/Header";
 import SignupPage from "./components/Pages/SignUpPage";
-import { Router } from "react-router-dom";
+import { Router, redirect } from "react-router-dom";
 import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import ContextApi from "./components/Context";
@@ -21,7 +21,7 @@ function App() {
       <Routes>
        
         <Route path="/" element={<SignupPage />} />
-        <Route path="/Welcome" element={<WelcomePage/>}/>
+        <Route path="/Welcome" element={ctx.isLoggedIn ? <WelcomePage/>: <SignupPage/>} />
          
       </Routes>
     </>
