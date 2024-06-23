@@ -9,10 +9,16 @@ const WelcomePage = () => {
     redirect("/");
   };
 
+  const verifyUserIdhandler = async ()=> {
+    
+
+  }
+
   return (
     <>
       <h1>Welcome to Expense Tracker!!!</h1>
       <button onClick={logOutButtonHandler}>Logout</button>
+      <button onClick={verifyUserIdhandler}>Verify email</button>
     </>
   );
 };
