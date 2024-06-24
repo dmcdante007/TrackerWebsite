@@ -7,7 +7,7 @@ import { Routes } from "react-router-dom";
 import { Route } from "react-router-dom";
 import ContextApi from "./components/Context";
 import WelcomePage from "./components/Pages/UserWelcomePage";
-import AddExpense from "./components/Pages/AddExpense";
+
 
 
 
@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <Header />
-      <AddExpense/>
+      
       
       <Routes>
        

@@ -1,104 +1,134 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 
 const styles = {
-    backgroundColor: 'red',
-    fontSize: '20px',
-    height: '20px'
-}
-const AddExpense = ()=> {
-    const expense = useRef();
-    const desc = useRef();
-    const category = useRef();
-    const [arr, setArr] = useState([])
+  backgroundColor: "red",
+  fontSize: "20px",
+  height: "20px",
+};
+const AddExpense = () => {
+  const expense = useRef();
+  const desc = useRef();
+  const category = useRef();
+  const [data, setData] = useState([]);
+  let arr = []
 
-    const containerStyle = {
-        width: "100%",
-        margin: '20px',
-        height: '50px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '10px',
-        border: '2px solid black',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '5px'
+  const containerStyle = {
+    width: "100%",
+    margin: "20px",
+    height: "50px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px",
+    border: "2px solid black",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    borderRadius: "5px",
+  };
+
+  const inputStyle = {
+    margin: "0 10px",
+    padding: "5px",
+    flex: "1",
+  };
+
+  const addDetailsToDB = (e) => {
+    e.preventDefault();
+
+    const newExpense = {
+      amount: expense.current.value,
+      desc: desc.current.value,
+      cat: category.current.value,
     };
 
-    const inputStyle = {
-        margin: '0 10px',
-        padding: '5px',
-        flex: '1'
-    };
+    axios
+      .post('https://practice-e0b6c-default-rtdb.firebaseio.com/data.json', newExpense)
+      .then(() => {
+        alert('Success');
+        fetchData(); // Refresh data after adding new item
+      })
+      .catch((error) => console.error('Error adding data:', error));
+  };
 
-   
-
-
-
-    const onSubmitHandler = (e) =>{
-        e.preventDefault();
-        const exp = expense.current.value;
-        const descIs = desc.current.value;
-        const cat = category.current.value;
-        
-
-        const obj = {
-            exp : exp,
-            desc: descIs,
-            cat : cat,
+  const fetchData = ()=>{
+    
+    axios
+      .get("https://practice-e0b6c-default-rtdb.firebaseio.com/data.json")
+      .then((response) => {
+        if (response.data) {
+          const fetchedData = Object.keys(response.data).map((key) => ({
+            id: key,
+            ...response.data[key],
+          }));
+          setData(fetchedData);
         }
-        addDetailsToDB(obj);
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }
 
-    }
+  const deleteItem = (id) => {
+    axios
+      .delete(`https://practice-e0b6c-default-rtdb.firebaseio.com/data/${id}.json`)
+      .then(() => {
+        alert('Item deleted');
+        fetchData(); // Refresh data after deletion
+      })
+      .catch((error) => console.error('Error deleting item:', error));
+  };
 
-    const addDetailsToDB = ((obj)=>{
-        axios.post('https://practice-e0b6c-default-rtdb.firebaseio.com/data.json',{
-            obj
-        }).then((is)=>{
-            alert('success')
-            console.log(is)}).catch((err)=>console.log(err))
+  const editItem = (id) => {
+    const updatedExpense = {
+      amount: prompt('Enter new amount:'),
+      desc: prompt('Enter new description:'),
+      cat: prompt('Enter new category:'),
+    };
 
+    axios
+      .put(`https://practice-e0b6c-default-rtdb.firebaseio.com/data/${id}.json`, updatedExpense)
+      .then(() => {
+        alert('Item updated');
+        fetchData(); // Refresh data after update
+      })
+      .catch((error) => console.error('Error updating item:', error));
+  };
 
-        axios.get('https://practice-e0b6c-default-rtdb.firebaseio.com/data.json').then((list)=>{
-            const listIS = JSON.stringify(list)
-            setArr(listIS)
-        
-        })
-    })
-
-
-
-
-    return (
-        <>
-        <div style={containerStyle}>
-            <form onSubmit={onSubmitHandler}>
-            <input style={inputStyle} type="number" placeholder="Add Expense" ref={expense}/>
-            <input style={inputStyle} type="text" placeholder="Add Description" ref={desc}/>
-            <select style={inputStyle} ref={category}>
-                <option>Food</option>
-                <option>Petrol</option>
-                <option>Salary</option>
-                <option>Bills</option>
-                <option>Other...</option>
-            </select>
-            <button 
-                type="submit" 
-                
-            >
-                Submit
-            </button>
-            </form>
-
-            
-        </div>
-        <ul>
-            <li>{arr.desc}</li>
-        </ul>
-
-        </>
-        
-    );
+  return (
+    <>
+      <div style={containerStyle}>
+        <form onSubmit={addDetailsToDB}>
+          <input
+            style={inputStyle}
+            type="number"
+            placeholder="Add Expense"
+            ref={expense}
+          />
+          <input
+            style={inputStyle}
+            type="text"
+            placeholder="Add Description"
+            ref={desc}
+          />
+          <select style={inputStyle} ref={category}>
+            <option>Food</option>
+            <option>Petrol</option>
+            <option>Salary</option>
+            <option>Bills</option>
+            <option>Other...</option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <ul>
+        {data.map((item) => (
+          <li key={item.id}>
+            {item.cat} {item.desc}
+            <button onClick={() => editItem(item.id)}>Edit</button>
+            <button onClick={() => deleteItem(item.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
 };
 
-export default AddExpense
+export default AddExpense;
