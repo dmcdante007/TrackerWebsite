@@ -1,4 +1,5 @@
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
+import axios from "axios";
 
 const styles = {
     backgroundColor: 'red',
@@ -9,6 +10,7 @@ const AddExpense = ()=> {
     const expense = useRef();
     const desc = useRef();
     const category = useRef();
+    const [arr, setArr] = useState([])
 
     const containerStyle = {
         width: "100%",
@@ -29,22 +31,48 @@ const AddExpense = ()=> {
         flex: '1'
     };
 
-    const buttonStyle = {
-        padding: '10px 20px',
-        backgroundColor: 'blue',
-        color: 'white',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s'
-    };
+   
 
-    const buttonHoverStyle = {
-        backgroundColor: 'darkblue'
-    };
+
+
+    const onSubmitHandler = (e) =>{
+        e.preventDefault();
+        const exp = expense.current.value;
+        const descIs = desc.current.value;
+        const cat = category.current.value;
+        
+
+        const obj = {
+            exp : exp,
+            desc: descIs,
+            cat : cat,
+        }
+        addDetailsToDB(obj);
+
+    }
+
+    const addDetailsToDB = ((obj)=>{
+        axios.post('https://practice-e0b6c-default-rtdb.firebaseio.com/data.json',{
+            obj
+        }).then((is)=>{
+            alert('success')
+            console.log(is)}).catch((err)=>console.log(err))
+
+
+        axios.get('https://practice-e0b6c-default-rtdb.firebaseio.com/data.json').then((list)=>{
+            const listIS = JSON.stringify(list)
+            setArr(listIS)
+        
+        })
+    })
+
+
+
 
     return (
+        <>
         <div style={containerStyle}>
+            <form onSubmit={onSubmitHandler}>
             <input style={inputStyle} type="number" placeholder="Add Expense" ref={expense}/>
             <input style={inputStyle} type="text" placeholder="Add Description" ref={desc}/>
             <select style={inputStyle} ref={category}>
@@ -56,13 +84,20 @@ const AddExpense = ()=> {
             </select>
             <button 
                 type="submit" 
-                style={buttonStyle}
-                onMouseEnter={(e) => e.target.style.backgroundColor = buttonHoverStyle.backgroundColor}
-                onMouseLeave={(e) => e.target.style.backgroundColor = buttonStyle.backgroundColor}
+                
             >
                 Submit
             </button>
+            </form>
+
+            
         </div>
+        <ul>
+            <li>{arr.desc}</li>
+        </ul>
+
+        </>
+        
     );
 };
 
