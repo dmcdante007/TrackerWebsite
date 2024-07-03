@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <>
-    <header>
+    <header className="navbar navbar-expand-lg navbar-light bg-light">
       <nav style={{backgroundColor: 'red'}}>
         <ul style={{ listStyle: "none", display: "flex", fontSize: '25px',  }}>
           <li style={{ marginLeft: '20px' }}>

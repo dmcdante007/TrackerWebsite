@@ -18,10 +18,10 @@ const SignupPage = () => {
     const passIs = passwordInputRef.current.value;
     let url;
     if(isLogin){
-        url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAvOmNGLPl3_8el7x7ah_Ha8s9rF9P5pb4'
+        url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCMilV_nBQX-Yqx7C2hrPMtel8lFjNSDm8'
     }
     else{
-        url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAvOmNGLPl3_8el7x7ah_Ha8s9rF9P5pb4'
+        url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCMilV_nBQX-Yqx7C2hrPMtel8lFjNSDm8'
     }
 
     fetch(url, {

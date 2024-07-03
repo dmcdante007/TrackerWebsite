@@ -11,15 +11,25 @@ export const ContextProvider = (props)=> {
     const initialToken = localStorage.getItem('token')
     const [token, setToken] = useState(initialToken);
     const userIsLoggedIn = !!token;
+    const [expense, setExpense] = useState(0);
+    const [arrOfExpenses, setArrofExpenses] = useState([])
+
+    const arrofExp = (e)=> {
+        setArrofExpenses(e + arrOfExpenses)
+    }
+
+    const totalExpenseis = (e)=> {
+        setExpense(Number(e) + expense) 
+    }
 
     const loginHandler = (tok)=> {
         setToken(tok);
         localStorage.setItem('token', tok);
 
-        setTimeout(()=>{
-            logouthandler();
+        // setTimeout(()=>{
+        //     logouthandler();
             
-        }, 5000)
+        // }, 5000)
        
     };
 
@@ -35,6 +45,11 @@ export const ContextProvider = (props)=> {
             isLoggedIn: userIsLoggedIn,
             login: loginHandler,
             logout: logouthandler,
+            totalExpense : totalExpenseis,
+            totalIs: expense,
+            pushObj: arrofExp,
+            arrIs: arrOfExpenses
+
 
     }
     return <ContextApi.Provider value={init}>

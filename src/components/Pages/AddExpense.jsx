@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import axios from "axios";
+import ContextApi from "../Context";
 
 const styles = {
   backgroundColor: "red",
@@ -11,8 +12,9 @@ const AddExpense = () => {
   const desc = useRef();
   const category = useRef();
   const [data, setData] = useState([]);
-  let arr = []
-
+  let arr = [];
+  const ctx = useContext(ContextApi)
+  
   const containerStyle = {
     width: "100%",
     margin: "20px",
@@ -44,6 +46,10 @@ const AddExpense = () => {
     axios
       .post('https://practice-e0b6c-default-rtdb.firebaseio.com/data.json', newExpense)
       .then(() => {
+        ctx.totalExpense(newExpense.amount)
+        // console.log(ctx.totalIs)
+        // ctx.pushObj(newExpense)
+        // console.log(ctx.arrIs.value)
         alert('Success');
         fetchData(); // Refresh data after adding new item
       })
@@ -121,7 +127,7 @@ const AddExpense = () => {
       <ul>
         {data.map((item) => (
           <li key={item.id}>
-            {item.cat} {item.desc}
+            {item.cat} {item.desc} {item.amount}
             <button onClick={() => editItem(item.id)}>Edit</button>
             <button onClick={() => deleteItem(item.id)}>Delete</button>
           </li>
